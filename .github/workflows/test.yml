@@ -1,25 +1,14 @@
 name: "units-test"
 on:
-  pull_request:
-  push:
-    branches:
-      - master
-      - 'releases/*'
+  push
 
 jobs:
-  # unit tests
-  units:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - run: npm test
-
   # test action works running from the graph  
   test:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
     - uses: ./
       with:
-        milliseconds: 1000
+        GIT_CRYPT_KEY: ${{secrets.GIT_CRYPT_KEY}}
+    - run: cat secret.txt
