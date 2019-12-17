@@ -968,7 +968,8 @@ async function run() {
     }
 
     await exec.exec(`echo ${key} | base64 -d > ./secret-key.key`);
-    await exec.exec('git-crypt unlock ./secrete-key.key');
+    await exec.exec('ls -al');  // Debug print to see permissions.
+    //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
 
     core.info('Secrets unlocked.');
   } 
