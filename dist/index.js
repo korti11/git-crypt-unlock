@@ -967,6 +967,10 @@ async function run() {
         throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
     }
 
+    if(!key) {
+      throw new Error('Key is empty!');
+    }
+
     await exec.exec(`echo ${key} | base64 -d > ./secret-key.key`);
     await exec.exec('ls -al');  // Debug print to see permissions.
     //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
