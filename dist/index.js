@@ -971,7 +971,8 @@ async function run() {
       throw new Error('Key is empty!');
     }
 
-    await exec.exec(`echo "${key}" > ./key-base64.txt`);
+    await exec.exec('touch ./key-base64.txt');
+    await exec.exec(`echo "${key}" >> ./key-base64.txt`);
     await exec.exec('base64 -d -i ./key-base64.txt -o ./secret-key.key')
     await exec.exec('ls -al ./');  // Debug print to see permissions.
     //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
