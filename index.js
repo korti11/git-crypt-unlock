@@ -25,6 +25,8 @@ async function run() {
       throw new Error('Key is empty!');
     }
 
+    await exec.exec('base64 --version') // Check if base64 is present.
+    await exec.exec('echo "Test file creation" > test.txt'); // Test if file is created.
     await exec.exec(`echo ${key} | base64 -d > secret-key.key`);
     await exec.exec('ls -al');  // Debug print to see permissions.
     //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
