@@ -10,7 +10,7 @@ async function run() {
 
     switch(osType) {
       case 'Darwin':
-        exec.exec('brew install git-crypt');
+        await exec.exec('brew install git-crypt');
         break;
       case 'Linux':
         throw new Error('Linux currently not supported.');
@@ -21,8 +21,8 @@ async function run() {
         throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
     }
 
-    exec.exec(`cat ${key} > ./tmp-base64.key && base64 -d ./tmp-base64.key > ./secret-key.key`);
-    exec.exec('git-crypt unlock ./secrete-key.key');
+    await exec.exec(`echo ${key} | base64 -d > ./secret-key.key`);
+    await exec.exec('git-crypt unlock ./secrete-key.key');
 
     core.info('Secrets unlocked.');
   } 
