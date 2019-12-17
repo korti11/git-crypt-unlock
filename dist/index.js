@@ -54,20 +54,32 @@ module.exports = require("os");
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(470);
-const wait = __webpack_require__(949);
-
+const exec = __webpack_require__(952);
+const os = __webpack_require__(87)
 
 // most @actions toolkit packages have async methods
 async function run() {
   try { 
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
+    const key = core.getInput('GIT_CRYPT_KEY');
+    const osType = os.type();
 
-    core.debug((new Date()).toTimeString())
-    wait(parseInt(ms));
-    core.debug((new Date()).toTimeString())
+    switch(osType) {
+      case 'Darwin':
+        exec.exec('brew install git-crypt');
+        break;
+      case 'Linux':
+        throw new Error('Linux currently not supported.');
+      case 'Windows_NT':
+        throw new Error('Windows currently not supported.');
+      default:
+        // Should never be thrown on github workflows.
+        throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
+    }
 
-    core.setOutput('time', new Date().toTimeString());
+    exec.exec(`cat ${key} > ./tmp-base64.key && base64 -d ./tmp-base64.key > ./secret-key.key`);
+    exec.exec('git-crypt unlock ./secrete-key.key');
+
+    core.info('Secrets unlocked.');
   } 
   catch (error) {
     core.setFailed(error.message);
@@ -343,20 +355,10 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ 949:
-/***/ (function(module) {
+/***/ 952:
+/***/ (function() {
 
-let wait = function(milliseconds) {
-  return new Promise((resolve, reject) => {
-    if (typeof(milliseconds) !== 'number') { 
-      throw new Error('milleseconds not a number'); 
-    }
-
-    setTimeout(() => resolve("done!"), milliseconds)
-  });
-}
-
-module.exports = wait;
+eval("require")("@actions/exec");
 
 
 /***/ })
