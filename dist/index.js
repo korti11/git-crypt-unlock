@@ -960,7 +960,8 @@ async function run() {
         await exec.exec('brew install git-crypt');
         break;
       case 'Linux':
-        throw new Error('Linux currently not supported.');
+        await exec.exec('apt-get update -y && apt-get install -y git-crypt');
+        break;
       case 'Windows_NT':
         throw new Error('Windows currently not supported.');
       default:
