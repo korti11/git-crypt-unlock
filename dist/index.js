@@ -972,7 +972,7 @@ async function run() {
       throw new Error('Key is empty!');
     }
 
-    let buffer = new Buffer(key, 'base64');
+    let buffer = Buffer.from(key, 'base64');
     fs.writeFileSync('secrete-key.key', buffer);
 
     await exec.exec('git-crypt unlock ./secrete-key.key');
