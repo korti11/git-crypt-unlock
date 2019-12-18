@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
-const os = require('os')
+const os = require('os');
+const fs = require('fs');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -25,11 +26,11 @@ async function run() {
       throw new Error('Key is empty!');
     }
 
-    await exec.exec('touch ./key-base64.txt');
-    await exec.exec(`echo "${key}" >> ./key-base64.txt`);
-    await exec.exec('base64 -d -i ./key-base64.txt -o ./secret-key.key')
+    let buffer = new Buffer(key, 'base64');
+    fs.writeFileSync('secrete-key.key', buffer);
+
     await exec.exec('ls -al ./');  // Debug print to see permissions.
-    //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
+    await exec.exec('git-crypt unlock ./secrete-key.key');
 
     core.info('Secrets unlocked.');
   } 

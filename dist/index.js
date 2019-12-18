@@ -946,7 +946,8 @@ module.exports = require("os");
 
 const core = __webpack_require__(470);
 const exec = __webpack_require__(986);
-const os = __webpack_require__(87)
+const os = __webpack_require__(87);
+const fs = __webpack_require__(747);
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -971,11 +972,11 @@ async function run() {
       throw new Error('Key is empty!');
     }
 
-    await exec.exec('touch ./key-base64.txt');
-    await exec.exec(`echo "${key}" >> ./key-base64.txt`);
-    await exec.exec('base64 -d -i ./key-base64.txt -o ./secret-key.key')
+    let buffer = new Buffer(key, 'base64');
+    fs.writeFileSync('secrete-key.key', buffer);
+
     await exec.exec('ls -al ./');  // Debug print to see permissions.
-    //await exec.exec('git-crypt unlock ./secrete-key.key'); // Currently not working :(
+    await exec.exec('git-crypt unlock ./secrete-key.key');
 
     core.info('Secrets unlocked.');
   } 
