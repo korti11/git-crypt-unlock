@@ -975,7 +975,6 @@ async function run() {
     let buffer = new Buffer(key, 'base64');
     fs.writeFileSync('secrete-key.key', buffer);
 
-    await exec.exec('ls -al ./');  // Debug print to see permissions.
     await exec.exec('git-crypt unlock ./secrete-key.key');
 
     core.info('Secrets unlocked.');
