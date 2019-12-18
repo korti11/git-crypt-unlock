@@ -1,7 +1,7 @@
 # Git Crypt Unlock
 
 This action allows you to decrypt files that were encrypted by [git-crypt](https://github.com/AGWA/git-crypt).
-Currently only MacOS is supported. For Linux use the [github-action-git-crypt-unlock](https://github.com/sliteteam/github-action-git-crypt-unlock) and for you windows folks I'm sorry the support has to wait for another time. To clarify that has nothing to do with your local machine os but rather with the os you run your workflow job on.
+Currently only MacOS and Ubuntu/Linux is supported. For you windows folks I'm sorry the support has to wait for another time. To clarify that has nothing to do with your local machine os but rather with the os you run your workflow job on.
 
 ## Usage
 
@@ -29,7 +29,7 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: korti11/git-crypt-unlock@v0.1
+    - uses: korti11/git-crypt-unlock@v0.3
       with:
         GIT_CRYPT_KEY: ${{secrets.GIT_CRYPT_KEY}}
 ```
