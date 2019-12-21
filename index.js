@@ -37,6 +37,9 @@ async function run() {
     let buffer = Buffer.from(key, 'base64');
     fs.writeFileSync('secrete-key.key', buffer);
 
+    if(osType == 'Windows_NT') {
+      await exec.exec('dir');
+    }
     await exec.exec('git-crypt unlock ./secrete-key.key');
 
     if(osType == 'Windows_NT') {
