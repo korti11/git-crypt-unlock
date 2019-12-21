@@ -4,6 +4,7 @@ const io = require('@actions/io');
 const os = require('os');
 const fs = require('fs');
 const https = require('https');
+const exe = require('child_process/exec');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -38,7 +39,11 @@ async function run() {
     fs.writeFileSync('secrete-key.key', buffer);
 
     if(osType == 'Windows_NT') {
-      await exec.exec('git-crypt.exe unlock ./secrete-key.key');
+      await exe('git-crypt.exe unlock ./secrete-key.key', (err, stdout, stderr) => {
+        if(err) {
+          throw new Error(err);
+        }
+      });
     } else {
       await exec.exec('git-crypt unlock ./secrete-key.key');
     }
