@@ -24,6 +24,7 @@ async function run() {
         https.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
           response.pipe(file);
         });
+        break;
       default:
         // Should never be thrown on github workflows.
         throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
