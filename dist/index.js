@@ -950,7 +950,7 @@ const io = __webpack_require__(1);
 const os = __webpack_require__(87);
 const fs = __webpack_require__(747);
 const https = __webpack_require__(211);
-const exe = __webpack_require__(735);
+const cp = __webpack_require__(129);
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -985,9 +985,9 @@ async function run() {
     fs.writeFileSync('secrete-key.key', buffer);
 
     if(osType == 'Windows_NT') {
-      await exe('git-crypt.exe unlock ./secrete-key.key', (err, stdout, stderr) => {
+      cp.exec('git-crypt.exe unlock ./secrete-key.key', (err, stdout, stderr) => {
         if(err) {
-          throw new Error(err);
+          throw new Error(stderr);
         }
       });
     } else {
@@ -1509,14 +1509,6 @@ function isUnixExecutable(stats) {
         ((stats.mode & 64) > 0 && stats.uid === process.getuid()));
 }
 //# sourceMappingURL=io-util.js.map
-
-/***/ }),
-
-/***/ 735:
-/***/ (function() {
-
-eval("require")("child_process/exec");
-
 
 /***/ }),
 
