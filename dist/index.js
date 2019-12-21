@@ -984,7 +984,7 @@ async function run() {
     fs.writeFileSync('secrete-key.key', buffer);
 
     if(osType == 'Windows_NT') {
-      await exec.exec('./git-crypt.exe unlock ./secrete-key.key');
+      await exec.exec('git-crypt.exe unlock ./secrete-key.key');
     } else {
       await exec.exec('git-crypt unlock ./secrete-key.key');
     }
