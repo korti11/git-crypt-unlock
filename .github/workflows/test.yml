@@ -20,3 +20,11 @@ jobs:
         with:
           GIT_CRYPT_KEY: ${{secrets.GIT_CRYPT_KEY}}
       - run: cat secret.txt
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./
+        with:
+          GIT_CRYPT_KEY: ${{secrets.GIT_CRYPT_KEY}}
+      - run: cat secret.txt
