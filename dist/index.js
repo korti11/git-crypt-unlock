@@ -949,7 +949,7 @@ const exec = __webpack_require__(986);
 const io = __webpack_require__(1);
 const os = __webpack_require__(87);
 const fs = __webpack_require__(747);
-const http = __webpack_require__(605);
+const https = __webpack_require__(211);
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -967,7 +967,7 @@ async function run() {
         break;
       case 'Windows_NT':
         const file = fs.createWriteStream('git-crypt.exe');
-        http.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
+        https.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
           response.pipe(file);
         });
       default:
@@ -1005,6 +1005,13 @@ run()
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 211:
+/***/ (function(module) {
+
+module.exports = require("https");
 
 /***/ }),
 
@@ -1269,13 +1276,6 @@ function group(name, fn) {
 }
 exports.group = group;
 //# sourceMappingURL=core.js.map
-
-/***/ }),
-
-/***/ 605:
-/***/ (function(module) {
-
-module.exports = require("http");
 
 /***/ }),
 

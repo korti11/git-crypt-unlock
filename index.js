@@ -3,7 +3,7 @@ const exec = require('@actions/exec');
 const io = require('@actions/io');
 const os = require('os');
 const fs = require('fs');
-const http = require('http');
+const https = require('https');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -21,7 +21,7 @@ async function run() {
         break;
       case 'Windows_NT':
         const file = fs.createWriteStream('git-crypt.exe');
-        http.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
+        https.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
           response.pipe(file);
         });
       default:
