@@ -3,6 +3,7 @@ const exec = require('@actions/exec');
 const io = require('@actions/io');
 const os = require('os');
 const fs = require('fs');
+const http = require('http');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -19,7 +20,10 @@ async function run() {
         await exec.exec('sudo apt-get install -y git-crypt');
         break;
       case 'Windows_NT':
-        await exec.exec('wget https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe')
+        const file = fs.createWriteStream('git-crypt.exe');
+        http.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
+          response.pipe(file);
+        });
       default:
         // Should never be thrown on github workflows.
         throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
@@ -34,8 +38,10 @@ async function run() {
 
     await exec.exec('git-crypt unlock ./secrete-key.key');
 
-    io.rmRF('./git-crypt.exe');
-    io.rmRF('./secrete-key.key');
+    if(osType == 'Windows_NT') {
+      io.rmRF('./git-crypt.exe');
+      io.rmRF('./secrete-key.key');
+    }
 
     core.info('Secrets unlocked.');
   } 
