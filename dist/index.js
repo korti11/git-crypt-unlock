@@ -980,6 +980,7 @@ async function run() {
         break;
       case 'Windows_NT':
         const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe');
+        await exec.exec(`ls ${gitCryptPath}`);
         core.info(process.env.PATH);
         process.env.PATH += `;${gitCryptPath}`;
         core.info(process.env.PATH);
