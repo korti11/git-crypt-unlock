@@ -26,8 +26,8 @@ async function run() {
         await exec.exec('sudo apt-get install -y git-crypt');
         break;
       case 'Windows_NT':
-        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe');
-        await io.mv(`${gitCryptPath}\\git-crypt.exe`, '.');
+        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe', 'git-crypt.exe');
+        core.info(`Git crypt path ${gitCryptPath}`);
         break;
       default:
         // Should never be thrown on github workflows.
