@@ -1,7 +1,7 @@
 # Git Crypt Unlock
 
 This action allows you to decrypt files that were encrypted by [git-crypt](https://github.com/AGWA/git-crypt).
-MacOS, Ubuntu/Linux and Windows is supported.
+MacOS, Ubuntu/Linux and Windows are supported.
 
 ## Usage
 
