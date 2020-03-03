@@ -1,7 +1,7 @@
 # Git Crypt Unlock
 
 This action allows you to decrypt files that were encrypted by [git-crypt](https://github.com/AGWA/git-crypt).
-Currently only MacOS and Ubuntu/Linux is supported. For you windows folks I'm sorry the support has to wait for another time. To clarify that has nothing to do with your local machine os but rather with the os you run your workflow job on.
+MacOS, Ubuntu/Linux and Windows is supported.
 
 ## Usage
 
