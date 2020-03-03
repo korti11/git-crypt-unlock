@@ -953,12 +953,9 @@ module.exports = require("os");
 
 const core = __webpack_require__(470);
 const exec = __webpack_require__(986);
-const io = __webpack_require__(1);
 const tc = __webpack_require__(533);
 const os = __webpack_require__(87);
 const fs = __webpack_require__(747);
-// const https = require('https');
-// const cp = require('child_process');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -982,9 +979,7 @@ async function run() {
         let exePath = process.cwd();
         exePath = exePath.substring(0, exePath.lastIndexOf('\\') + 1) + 'git-crypt';
         process.env.PATH += `;${exePath}`;
-        core.info(exePath);
-        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe', `${exePath}\\git-crypt.exe`);
-        core.info(`Git crypt path ${gitCryptPath}`);
+        await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe', `${exePath}\\git-crypt.exe`);
         break;
       default:
         // Should never be thrown on github workflows.
@@ -992,23 +987,17 @@ async function run() {
     }
 
     let buffer = Buffer.from(key, 'base64');
-    fs.writeFileSync('secrete-key.key', buffer);
+    let secreteFile = 'secrete-key.key';
+    fs.writeFileSync(secreteFile, buffer);
 
     await exec.exec('git-crypt unlock ./secrete-key.key');
 
+    fs.unlinkSync(secreteFile);
     core.info('Secrets unlocked.');
   } 
   catch (error) {
     core.setFailed(error.message);
   }
-}
-
-async function unlockWindows() {
-
-}
-
-async function unlock() {
-
 }
 
 run()
