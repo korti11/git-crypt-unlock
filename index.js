@@ -27,7 +27,9 @@ async function run() {
         break;
       case 'Windows_NT':
         const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe');
-        await exec.exec(`setx path "%path%;${gitCryptPath}`)
+        await exec.exec('echo %PATH%');
+        await exec.exec(`setx path "%path%;${gitCryptPath}`);
+        await exec.exec('echo %PATH%');
         break;
       default:
         // Should never be thrown on github workflows.
