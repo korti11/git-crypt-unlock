@@ -29,7 +29,7 @@ jobs:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: korti11/git-crypt-unlock@v0.3
+    - uses: korti11/git-crypt-unlock@v1.0
       with:
         GIT_CRYPT_KEY: ${{secrets.GIT_CRYPT_KEY}}
 ```
