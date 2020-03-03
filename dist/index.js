@@ -979,8 +979,11 @@ async function run() {
         await exec.exec('sudo apt-get install -y git-crypt');
         break;
       case 'Windows_NT':
-        const currentPath = process.cwd();
-        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe', `${currentPath}\\git-crypt.exe`);
+        let exePath = process.cwd();
+        exePath = exePath.substring(0, exePath.lastIndexOf('\\') + 1) + 'git-crypt';
+        process.env.PATH += `;${exePath}`;
+        core.info(exePath);
+        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe', `${exePath}\\git-crypt.exe`);
         core.info(`Git crypt path ${gitCryptPath}`);
         break;
       default:
