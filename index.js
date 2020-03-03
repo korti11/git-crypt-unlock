@@ -1,16 +1,21 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
 const io = require('@actions/io');
+const tc = require('@actions/tool-cache');
 const os = require('os');
 const fs = require('fs');
-const https = require('https');
-const cp = require('child_process');
+// const https = require('https');
+// const cp = require('child_process');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try { 
     const key = core.getInput('GIT_CRYPT_KEY');
     const osType = os.type();
+
+    if(!key) {
+      throw new Error('Key is empty!');
+    }
 
     switch(osType) {
       case 'Darwin':
@@ -21,43 +26,32 @@ async function run() {
         await exec.exec('sudo apt-get install -y git-crypt');
         break;
       case 'Windows_NT':
-        const file = fs.createWriteStream('git-crypt.exe');
-        https.get("https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe", (response) => {
-          response.pipe(file);
-        });
+        const gitCryptPath = await tc.downloadTool('https://github.com/oholovko/git-crypt-windows/releases/download/1.0.35/git-crypt.exe');
+        await exec.exec(`setx path "%path%;${gitCryptPath}`)
         break;
       default:
         // Should never be thrown on github workflows.
         throw new Error(`OS: ${osType} not supported. What did you do this should never happened :O`);
     }
 
-    if(!key) {
-      throw new Error('Key is empty!');
-    }
-
     let buffer = Buffer.from(key, 'base64');
     fs.writeFileSync('secrete-key.key', buffer);
 
-    if(osType == 'Windows_NT') {
-      cp.exec('git-crypt.exe unlock ./secrete-key.key', (err, stdout, stderr) => {
-        if(err) {
-          throw new Error(stderr);
-        }
-      });
-    } else {
-      await exec.exec('git-crypt unlock ./secrete-key.key');
-    }
-
-    if(osType == 'Windows_NT') {
-      io.rmRF('./git-crypt.exe');
-      io.rmRF('./secrete-key.key');
-    }
+    await exec.exec('git-crypt unlock ./secrete-key.key');
 
     core.info('Secrets unlocked.');
   } 
   catch (error) {
     core.setFailed(error.message);
   }
+}
+
+async function unlockWindows() {
+
+}
+
+async function unlock() {
+
 }
 
 run()
